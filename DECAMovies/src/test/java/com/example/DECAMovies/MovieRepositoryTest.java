@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -23,6 +24,16 @@ public class MovieRepositoryTest {
 
     @Test
     public void testCreateMovie(){
+
+        MovieModel movie = new MovieModel();
+        movie.setMovieTitle("Dave The Movie");
+        movie.setMovieDescription("Dave is a super Hero from the Super Heroes of the Super Heroes Saving the Super Heroes");
+        movie.setMovieGenre("SuperHero");
+
+        MovieModel savedMovie = repo.save(movie);
+        MovieModel existMovie = entityManager.find(MovieModel.class, savedMovie.getId());
+
+        assertThat(existMovie.getId()).isEqualTo(movie.getId());
 
     }
 }
