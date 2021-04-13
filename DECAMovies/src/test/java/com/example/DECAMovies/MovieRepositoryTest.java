@@ -26,9 +26,9 @@ public class MovieRepositoryTest {
     public void testCreateMovie(){
 
         MovieModel movie = new MovieModel();
-        movie.setMovieTitle("Dave The Movie");
-        movie.setMovieDescription("Dave is a super Hero from the Super Heroes of the Super Heroes Saving the Super Heroes");
-        movie.setMovieGenre("SuperHero");
+        movie.setMovieTitle("DECAMOVIES");
+        movie.setMovieDescription("A movie about the best team of Techgrounds!");
+        movie.setMovieGenre("Teamwork");
 
         MovieModel savedMovie = repo.save(movie);
         MovieModel existMovie = entityManager.find(MovieModel.class, savedMovie.getId());
