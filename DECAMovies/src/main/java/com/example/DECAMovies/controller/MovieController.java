@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Netflix")
+@RequestMapping("/DECAMovies")
 public class MovieController {
 
     @Autowired
