@@ -22,4 +22,12 @@ public class MovieService {
     public Optional<MovieModel> singleMovie(Long id) {
         return repo.findById(id);
     }
+
+    public MovieModel addMovie(MovieModel model) {
+        return repo.save(model);
+    }
+
+    public void deleteMovie(Long id) {
+        repo.deleteById(id);
+    }
 }
