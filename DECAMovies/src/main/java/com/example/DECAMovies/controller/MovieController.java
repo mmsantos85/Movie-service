@@ -2,6 +2,7 @@ package com.example.DECAMovies.controller;
 
 
 import com.example.DECAMovies.model.MovieModel;
+import com.example.DECAMovies.repository.FeignClientInterface;
 import com.example.DECAMovies.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,31 +10,44 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("/DECAMovies")
+@CrossOrigin(origins = "http://localhost:3000")
 public class MovieController {
 
     @Autowired
     private MovieService service;
 
+    @Autowired
+    private FeignClientInterface feign;
+
     @GetMapping("/Discover")
     public ResponseEntity requestMovies(HttpServletRequest request){
-        try{
-            List<MovieModel> movies = service.movieModelList();
-            return new ResponseEntity(movies, HttpStatus.OK);
-        }catch (Exception e){
+
+        try {
+            Object disoverMovies = Optional.ofNullable(feign.discoverMovies("54556045cb2a05c4fcbc1a1494d5294a"));
+            return new ResponseEntity(disoverMovies, HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity("Internal Server Error: No movies found", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+//        try{
+//            List<MovieModel> movies = service.movieModelList();
+//            return new ResponseEntity(movies, HttpStatus.OK);
+//        }catch (Exception e){
+//            return new ResponseEntity("Internal Server Error: No movies found", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
-    @GetMapping("/Discover/{id}")
-    public ResponseEntity requestSingleProduct(@PathVariable Long id, HttpServletRequest request){
+    @GetMapping("/movie/{id}")
+    public ResponseEntity <Object>requestSingleMovie(@PathVariable Integer id, HttpServletRequest request){
         try{
-            Optional<MovieModel> movie = service.singleMovie(id);
-            return new ResponseEntity<>(movie, HttpStatus.OK);
+            Optional<Object> movieDetails = feign.singleMovie(id);
+            return new ResponseEntity<>(movieDetails.get(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity("This movie doesnt exist", HttpStatus.INTERNAL_SERVER_ERROR);
         }
