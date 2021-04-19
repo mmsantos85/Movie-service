@@ -30,8 +30,8 @@ public class MovieController {
     public ResponseEntity requestMovies(HttpServletRequest request){
 
         try {
-            Object disoverMovies = Optional.ofNullable(feign.discoverMovies("54556045cb2a05c4fcbc1a1494d5294a"));
-            return new ResponseEntity(disoverMovies, HttpStatus.OK);
+            Object discoverMovies = Optional.ofNullable(feign.discoverMovies("54556045cb2a05c4fcbc1a1494d5294a"));
+            return new ResponseEntity(discoverMovies, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity("Internal Server Error: No movies found", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -52,6 +52,18 @@ public class MovieController {
             return new ResponseEntity("This movie doesnt exist", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         }
+
+
+    //Movie Trailers
+    @GetMapping("movie/{id}/videos")
+    public ResponseEntity<List<Object>> getMovieTrailers(@PathVariable Integer id, HttpServletRequest request){
+        try{
+            Object trailersList = feign.trailers(id);
+            return new ResponseEntity(trailersList, HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity("This trailer doesnt exist", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PutMapping("/Discover")
     public ResponseEntity addMovie(@RequestBody MovieModel newMovieData){
