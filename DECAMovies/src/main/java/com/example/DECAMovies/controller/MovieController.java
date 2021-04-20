@@ -43,10 +43,10 @@ public class MovieController {
 //        }
     }
 
-    @GetMapping("/movie/{id}")
+    @GetMapping("/Movie/{id}")
     public ResponseEntity <Object>requestSingleMovie(@PathVariable Integer id, HttpServletRequest request){
         try{
-            Optional<Object> movieDetails = feign.singleMovie(id);
+            Optional<Object> movieDetails = feign.singleMovie(id, "54556045cb2a05c4fcbc1a1494d5294a");
             return new ResponseEntity<>(movieDetails.get(), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity("This movie doesnt exist", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,7 +55,7 @@ public class MovieController {
 
 
     //Movie Trailers
-    @GetMapping("movie/{id}/videos")
+    @GetMapping("/Movie/{id}/videos")
     public ResponseEntity<List<Object>> getMovieTrailers(@PathVariable Integer id, HttpServletRequest request){
         try{
             Object trailersList = feign.trailers(id,"54556045cb2a05c4fcbc1a1494d5294a");
@@ -65,24 +65,15 @@ public class MovieController {
         }
     }
 
-    @PutMapping("/Discover")
-    public ResponseEntity addMovie(@RequestBody MovieModel newMovieData){
-        try{
-            MovieModel newMovie = service.addMovie(newMovieData);
-            return new ResponseEntity<>(newMovie, HttpStatus.CREATED);
-        } catch (Exception e){
-            return new ResponseEntity("This request isn't valid", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    @GetMapping("/Genres")
+    public ResponseEntity requestGenre(HttpServletRequest request) {
 
-    @DeleteMapping("/Discover/{id}")
-    public ResponseEntity deleteMovie(@PathVariable Long id){
-        try{
-            service.deleteMovie(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            Object genreMovies = Optional.ofNullable(feign.listOfGenre("54556045cb2a05c4fcbc1a1494d5294a"));
+            return new ResponseEntity(genreMovies, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity("SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("Internal Server Error: No movies found", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
 
     }
+}

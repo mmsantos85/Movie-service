@@ -15,10 +15,10 @@ public interface FeignClientInterface {
     Object discoverMovies(@RequestParam String api_key);
 
     @GetMapping(value = "/genre/movie/list", produces = "application/json")
-    List<Object> listOfGenre();
+    Optional<Object> listOfGenre(@RequestParam String api_key);
 
     @GetMapping(value = "movie/{id}", produces = "application/json")
-    Optional<Object> singleMovie(@PathVariable("id") Integer id);
+    Optional<Object> singleMovie(@PathVariable("id") Integer id, @RequestParam String api_key);
 
     @GetMapping(value = "/movie/{id}/videos", produces = "application/json")
     Object trailers(@PathVariable Integer id, @RequestParam String api_key);
