@@ -58,7 +58,7 @@ public class MovieController {
     @GetMapping("movie/{id}/videos")
     public ResponseEntity<List<Object>> getMovieTrailers(@PathVariable Integer id, HttpServletRequest request){
         try{
-            Object trailersList = feign.trailers(id);
+            Object trailersList = feign.trailers(id,"54556045cb2a05c4fcbc1a1494d5294a");
             return new ResponseEntity(trailersList, HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity("This trailer doesnt exist", HttpStatus.INTERNAL_SERVER_ERROR);

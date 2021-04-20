@@ -21,7 +21,7 @@ public interface FeignClientInterface {
     Optional<Object> singleMovie(@PathVariable("id") Integer id);
 
     @GetMapping(value = "/movie/{id}/videos", produces = "application/json")
-    Object trailers(@PathVariable Integer id);
+    Object trailers(@PathVariable Integer id, @RequestParam String api_key);
 
 }
 
